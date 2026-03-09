@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TALENT DAY — Oops We Filmed It Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('xDgLfuuKcd3-P1r9g');</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF7;
+  --white:#FFFFFF;
+  --ink:#1A1A18;
+  --vermillion:#C0392B;
+  --vermillion-light:#E8584A;
+  --muted:#999990;
+  --border:#E8E8E2;
+  --sidebar:#F5F5F0;
+  --hover:#F0F0EA;
+  --green:#2D6A4F;
+  --blue:#1D4E89;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans JP',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* ── PAGES ── */
+.page{display:none;min-height:100vh;animation:fadeUp .5s ease forwards}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 60px;border-bottom:1px solid var(--border);background:rgba(250,250,247,.96);backdrop-filter:blur(20px)}
+.nav-logo{cursor:pointer}
+.nav-logo-main{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:400;letter-spacing:0.15em;color:var(--ink)}
+.nav-logo-sub{font-size:9px;letter-spacing:0.4em;color:var(--muted);margin-top:3px;text-transform:uppercase}
+.nav-links{display:flex;gap:40px;align-items:center}
+.nav-link{font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;position:relative}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--vermillion);transform:scaleX(0);transition:transform .2s}
+.nav-link:hover,.nav-link.active{color:var(--ink)}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+
+/* ── HERO ── */
+#home-page{padding-top:0}
+.hero{position:relative;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;background:var(--bg)}
+/* Vertical line accents */
+.hero::before,.hero::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:var(--border)}
+.hero::before{left:60px}
+.hero::after{right:60px}
+.hero-mark{position:absolute;top:88px;left:50%;transform:translateX(-50%);width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--vermillion),transparent)}
+.hero-content{position:relative;z-index:1}
+.hero-eyebrow{font-size:9px;letter-spacing:0.55em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;opacity:0;animation:fadeUp .7s .1s forwards;display:flex;align-items:center;justify-content:center;gap:16px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:24px;height:1px;background:var(--border)}
+.hero-title{font-family:'Noto Serif JP',serif;font-size:clamp(68px,10vw,120px);font-weight:200;line-height:0.9;letter-spacing:-0.02em;margin-bottom:6px;opacity:0;animation:fadeUp .7s .25s forwards;color:var(--ink)}
+.hero-title-ja{font-family:'Noto Serif JP',serif;font-size:clamp(14px,2vw,20px);font-weight:300;letter-spacing:0.5em;color:var(--muted);margin-bottom:32px;opacity:0;animation:fadeUp .7s .35s forwards;display:block}
+.hero-sub{font-size:10px;color:var(--muted);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:52px;opacity:0;animation:fadeUp .7s .45s forwards}
+.hero-cta{display:inline-flex;gap:16px;opacity:0;animation:fadeUp .7s .55s forwards}
+.btn{padding:13px 32px;font-family:'Noto Sans JP',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;border:none;cursor:pointer;transition:all .25s;font-weight:400}
+.btn-ink{background:var(--ink);color:var(--white)}
+.btn-ink:hover{background:#333}
+.btn-outline{background:transparent;color:var(--ink);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--ink)}
+/* Vertical scroll indicator */
+.scroll-hint{position:absolute;bottom:40px;left:60px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1;animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:.2}50%{opacity:.7}}
+.scroll-hint span{font-size:8px;letter-spacing:0.4em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--ink),transparent)}
+
+/* ── STATS STRIP ── */
+.stats-strip{display:flex;justify-content:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white)}
+.strip-stat{text-align:center;padding:32px 56px;border-right:1px solid var(--border);position:relative}
+.strip-stat:last-child{border-right:none}
+.strip-num{font-family:'Noto Serif JP',serif;font-size:44px;font-weight:200;line-height:1;color:var(--ink)}
+.strip-label{font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+/* ── SECTION SHARED ── */
+.section{padding:96px 60px;max-width:1160px;margin:0 auto}
+.section-label{font-size:8px;letter-spacing:0.55em;text-transform:uppercase;color:var(--vermillion);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-title{font-family:'Noto Serif JP',serif;font-size:clamp(32px,4.5vw,52px);font-weight:300;line-height:1.1;margin-bottom:40px;letter-spacing:-0.01em}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
+.about-text p{font-size:14px;line-height:2;color:#666;margin-bottom:16px;font-weight:300}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;margin-top:48px;border:1px solid var(--border)}
+.stat-box{padding:24px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat-box:nth-child(2){border-right:none}
+.stat-box:nth-child(3){border-bottom:none}
+.stat-box:nth-child(4){border-right:none;border-bottom:none}
+.stat-num-sm{font-family:'Noto Serif JP',serif;font-size:36px;font-weight:200}
+.stat-lbl{font-size:8px;letter-spacing:0.4em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.about-visual{position:relative;aspect-ratio:3/4;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.about-visual-inner{text-align:center}
+.about-visual-kanji{font-family:'Noto Serif JP',serif;font-size:96px;font-weight:200;color:var(--border);line-height:1;letter-spacing:0.1em}
+.about-visual-caption{font-size:8px;letter-spacing:0.5em;text-transform:uppercase;color:var(--muted);margin-top:16px}
+/* Corner marks */
+.about-visual::before,.about-visual::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--vermillion);border-style:solid}
+.about-visual::before{top:12px;left:12px;border-width:1px 0 0 1px}
+.about-visual::after{bottom:12px;right:12px;border-width:0 1px 1px 0}
+
+/* ── APPLY ── */
+#apply-page{padding-top:80px;background:var(--bg)}
+.apply-wrap{max-width:620px;margin:0 auto;padding:72px 40px}
+.form-header{margin-bottom:52px}
+.form-label{display:block;font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.form-group{margin-bottom:24px}
+.form-input,.form-textarea,.form-select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink);padding:12px 0;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:300;outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-bottom-color:var(--ink)}
+.form-input::placeholder,.form-textarea::placeholder{color:#ccc;font-weight:300}
+.form-textarea{resize:vertical;min-height:120px;border:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px}
+.form-textarea:focus{border-color:var(--ink)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.submit-btn{width:100%;padding:16px;background:var(--ink);color:var(--white);font-family:'Noto Sans JP',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;transition:background .2s;margin-top:16px}
+.submit-btn:hover{background:#333}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* VERIFY */
+.verify-box{background:var(--white);border:1px solid var(--border);padding:48px;text-align:center;max-width:420px;margin:0 auto;position:relative}
+.verify-box::before,.verify-box::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--vermillion);border-style:solid}
+.verify-box::before{top:12px;left:12px;border-width:1px 0 0 1px}
+.verify-box::after{bottom:12px;right:12px;border-width:0 1px 1px 0}
+.verify-title{font-family:'Noto Serif JP',serif;font-size:28px;font-weight:300;margin-bottom:10px}
+.verify-code-inputs{display:flex;gap:12px;justify-content:center;margin:28px 0}
+.code-digit{width:52px;height:64px;background:transparent;border:none;border-bottom:2px solid var(--border);color:var(--ink);font-size:28px;font-family:'Noto Serif JP',serif;font-weight:300;text-align:center;outline:none;transition:border-color .2s}
+.code-digit:focus{border-bottom-color:var(--ink)}
+
+/* ── STAFF PAGE ── */
+#staff-page{padding-top:80px}
+.staff-wrap{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 80px)}
+.staff-sidebar{background:var(--sidebar);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:80px;height:calc(100vh - 80px);overflow-y:auto}
+.sidebar-label{font-size:8px;letter-spacing:0.5em;text-transform:uppercase;color:var(--muted);padding:20px 24px 8px;display:block}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:11px 24px;cursor:pointer;transition:all .15s;font-size:11px;letter-spacing:0.1em;color:var(--muted);border-left:1px solid transparent;font-weight:300}
+.sidebar-item:hover{color:var(--ink);background:var(--hover)}
+.sidebar-item.active{color:var(--ink);border-left-color:var(--vermillion);background:var(--white)}
+.sidebar-icon{font-size:13px;width:18px;text-align:center;opacity:.7}
+.sidebar-footer{padding:20px 24px;border-top:1px solid var(--border);position:absolute;bottom:0;width:100%;background:var(--sidebar)}
+.staff-main{padding:44px;overflow-y:auto;background:var(--bg)}
+.staff-tab{display:none}.staff-tab.active{display:block;animation:fadeUp .3s forwards}
+.staff-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.staff-title{font-family:'Noto Serif JP',serif;font-size:32px;font-weight:300;letter-spacing:-0.01em}
+.staff-subtitle{font-size:9px;letter-spacing:0.35em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* MEMBER CARDS */
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--border)}
+.member-card{background:var(--white);padding:24px;transition:background .15s}
+.member-card:hover{background:var(--hover)}
+.member-avatar{font-family:'Noto Serif JP',serif;font-size:28px;font-weight:200;color:var(--vermillion);margin-bottom:12px;line-height:1}
+.member-name{font-size:12px;font-weight:400;margin-bottom:4px;letter-spacing:0.05em}
+.member-role{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted)}
+.member-badge{display:inline-block;font-size:8px;padding:2px 8px;margin-top:8px;letter-spacing:0.3em;text-transform:uppercase;border:1px solid var(--border);color:var(--muted)}
+
+/* IDEAS */
+.ideas-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);margin-top:1px}
+.idea-card{background:var(--white);padding:24px;transition:background .15s}
+.idea-card:hover{background:var(--hover)}
+.idea-author{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.idea-author-name{font-family:'Noto Serif JP',serif;font-size:16px;font-weight:300;color:var(--ink)}
+.idea-time{font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted)}
+.idea-text{font-size:12px;line-height:2;color:#555;margin-bottom:12px;font-weight:300}
+.idea-tag{font-size:8px;padding:2px 10px;letter-spacing:0.35em;text-transform:uppercase;border:1px solid var(--border);color:var(--muted)}
+.idea-actions{display:flex;gap:12px;margin-top:10px}
+.idea-btn{background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;transition:color .15s;font-family:'Noto Sans JP',sans-serif;display:flex;align-items:center;gap:3px;letter-spacing:0.1em}
+.idea-btn:hover{color:var(--vermillion)}
+.post-idea-box{background:var(--white);border:1px solid var(--border);padding:20px;margin-bottom:1px}
+.post-idea-box textarea{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink);padding:8px 0;font-family:'Noto Sans JP',sans-serif;font-size:13px;resize:none;height:68px;outline:none;transition:border-color .2s;font-weight:300}
+.post-idea-box textarea:focus{border-bottom-color:var(--ink)}
+.post-idea-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.tag-select{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--muted);padding:4px 0;font-family:'Noto Sans JP',sans-serif;font-size:10px;outline:none;letter-spacing:0.2em;text-transform:uppercase}
+
+/* CHAT */
+.chat-container{display:flex;flex-direction:column;height:calc(100vh - 280px);min-height:360px;background:var(--white);border:1px solid var(--border);overflow:hidden}
+.chat-header{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.chat-avatar{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:200;color:var(--vermillion);width:32px;line-height:1}
+.chat-name{font-size:12px;font-weight:400;letter-spacing:0.05em}
+.chat-status{font-size:8px;letter-spacing:0.35em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:4px;margin-top:2px}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}
+.chat-msg{display:flex;gap:10px;max-width:78%}
+.chat-msg.mine{flex-direction:row-reverse;align-self:flex-end}
+.msg-avatar{font-family:'Noto Serif JP',serif;font-size:11px;font-weight:300;color:var(--muted);width:24px;flex-shrink:0;text-align:center;margin-top:4px}
+.msg-avatar.drew{color:var(--vermillion)}
+.msg-bubble{padding:10px 14px;font-size:12px;line-height:1.75;font-weight:300;border-radius:0}
+.chat-msg:not(.mine) .msg-bubble{background:var(--white);border:1px solid var(--border);border-radius:0 8px 8px 8px;color:var(--ink)}
+.chat-msg.mine .msg-bubble{background:var(--ink);color:var(--white);border-radius:8px 0 8px 8px}
+.msg-time{font-size:8px;color:var(--muted);margin-top:3px;letter-spacing:0.2em;text-transform:uppercase}
+.chat-input-bar{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:10px;background:var(--white)}
+.chat-input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink);padding:8px 0;font-family:'Noto Sans JP',sans-serif;font-size:12px;outline:none;transition:border-color .2s;font-weight:300}
+.chat-input:focus{border-bottom-color:var(--ink)}
+.chat-input::placeholder{color:#ccc}
+.chat-send{background:var(--ink);color:var(--white);border:none;padding:0 20px;cursor:pointer;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;transition:background .15s;font-family:'Noto Sans JP',sans-serif}
+.chat-send:hover{background:#333}
+.group-chat-members{display:flex;gap:6px;padding:9px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--sidebar)}
+.gchat-member{font-size:8px;color:var(--muted);padding:2px 8px;letter-spacing:0.3em;text-transform:uppercase;border:1px solid var(--border)}
+
+/* BRACKET */
+.bracket-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);margin-top:1px}
+.role-card{background:var(--white);padding:24px;position:relative;transition:background .15s}
+.role-card:hover{background:var(--hover)}
+.role-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .2s}
+.role-card:hover::before{background:var(--vermillion)}
+.role-number{font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.role-name{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:300;margin-bottom:6px;letter-spacing:-0.01em;color:var(--ink)}
+.role-assigned{font-size:10px;letter-spacing:0.2em;color:var(--muted);margin-bottom:10px}
+.role-desc{font-size:11px;color:#666;line-height:1.9;font-weight:300}
+.role-status{display:inline-flex;align-items:center;gap:4px;font-size:8px;padding:2px 10px;margin-top:12px;letter-spacing:0.4em;text-transform:uppercase;font-weight:400;border:1px solid}
+.status-open{border-color:rgba(45,106,79,.25);color:var(--green)}
+.status-filled{border-color:var(--border);color:var(--muted)}
+.status-considering{border-color:rgba(29,78,137,.2);color:var(--blue)}
+.role-edit-btn{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--border);cursor:pointer;font-size:12px;transition:color .15s}
+.role-edit-btn:hover{color:var(--vermillion)}
+.bracket-info{background:var(--white);border:1px solid var(--border);padding:12px 16px;margin-bottom:1px;font-size:10px;letter-spacing:0.2em;color:var(--muted)}
+
+/* APPS */
+.app-list{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.app-item{background:var(--white);padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.app-info h4{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:300;margin-bottom:4px}
+.app-info p{font-size:10px;letter-spacing:0.15em;color:var(--muted)}
+.app-why{font-size:12px;color:#555;margin-top:8px;line-height:1.9;max-width:440px;font-weight:300}
+.app-actions{display:flex;gap:8px;flex-shrink:0}
+.btn-approve{background:transparent;color:var(--green);border:1px solid rgba(45,106,79,.3);padding:7px 16px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;transition:background .15s}
+.btn-approve:hover{background:rgba(45,106,79,.08)}
+.btn-deny{background:transparent;color:var(--vermillion);border:1px solid rgba(192,57,43,.25);padding:7px 16px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;transition:background .15s}
+.btn-deny:hover{background:rgba(192,57,43,.08)}
+.empty-state{text-align:center;padding:56px;color:var(--muted);font-size:10px;letter-spacing:0.4em;text-transform:uppercase}
+
+/* MODALS */
+.modal-bg{position:fixed;inset:0;background:rgba(26,26,24,.4);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex;animation:fadeUp .2s forwards}
+.modal{background:var(--white);width:100%;max-width:460px;box-shadow:0 24px 80px rgba(0,0,0,.1);position:relative}
+.modal::before,.modal::after{content:'';position:absolute;width:20px;height:20px;border-color:var(--vermillion);border-style:solid;z-index:1}
+.modal::before{top:16px;left:16px;border-width:1px 0 0 1px}
+.modal::after{bottom:16px;right:16px;border-width:0 1px 1px 0}
+.modal-inner{padding:40px}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:24px;font-weight:300;margin-bottom:24px;letter-spacing:-0.01em}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;transition:color .15s;z-index:2}
+.modal-close:hover{color:var(--ink)}
+
+/* NOTIF / TOAST */
+.notif{position:fixed;bottom:28px;right:28px;background:var(--ink);color:var(--white);padding:14px 20px;font-size:11px;letter-spacing:0.1em;z-index:1000;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;max-width:300px;line-height:1.7;border-left:3px solid var(--vermillion)}
+.notif.show{opacity:1;transform:translateY(0)}
+.toast{position:fixed;top:94px;left:50%;transform:translateX(-50%) translateY(-12px);background:var(--ink);color:var(--white);padding:10px 22px;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;z-index:1001;opacity:0;transition:all .22s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.btn-small{padding:10px 22px;background:var(--ink);color:var(--white);font-family:'Noto Sans JP',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background .15s;font-weight:400}
+.btn-small:hover{background:#333}
+
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .hero::before,.hero::after{display:none}
+  .section{padding:60px 20px}
+  .about-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .apply-wrap{padding:60px 20px}
+  .staff-wrap{grid-template-columns:1fr}
+  .staff-sidebar{position:static;height:auto}
+  .stats-strip{flex-wrap:wrap}
+  .strip-stat{flex:1;min-width:110px;padding:24px 16px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-main">Talent Day</div>
+    <div class="nav-logo-sub">Oops We Filmed It Studio</div>
+  </div>
+  <div class="nav-links">
+    <span class="nav-link active" id="nav-home" onclick="showPage('home')">Home</span>
+    <span class="nav-link" id="nav-apply" onclick="showPage('apply')">Apply</span>
+    <span class="nav-link" id="nav-staff" onclick="requireStaff()">Staff Portal</span>
+  </div>
+</nav>
+
+<div class="notif" id="notif"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="page active" id="home-page">
+  <div class="hero">
+    <div class="hero-mark"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Oops We Filmed It Studio · 2026</div>
+      <h1 class="hero-title">Talent Day</h1>
+      <span class="hero-title-ja"></span>
+      <p class="hero-sub">Open Casting · A Comedy Film</p>
+      <div class="hero-cta">
+        <button class="btn btn-ink" onclick="showPage('apply')">Apply Now</button>
+        <button class="btn btn-outline" onclick="document.getElementById('about-sec').scrollIntoView({behavior:'smooth'})">Learn More</button>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>scroll</span>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="strip-stat"><div class="strip-num" id="stat-apps">0</div><div class="strip-label">Applications</div></div>
+    <div class="strip-stat"><div class="strip-num">6</div><div class="strip-label">Open Roles</div></div>
+    <div class="strip-stat"><div class="strip-num" id="stat-cast">1</div><div class="strip-label">Cast So Far</div></div>
+  </div>
+
+  <div class="section" id="about-sec">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">About</div>
+        <h2 class="section-title">A Comedy<br/>Like No Other</h2>
+        <p>Talent Day is an independent short film produced by Oops We Filmed It Studio — a comedy built by real people with real energy.</p>
+        <p>No experience necessary. We're looking for personality, presence, and people who are genuinely excited to be on screen.</p>
+        <p>Every application is reviewed personally by Director Drew. If you've got it, you'll hear back with an access code to the Staff Portal.</p>
+        <div class="about-stats">
+          <div class="stat-box"><div class="stat-num-sm">2026</div><div class="stat-lbl">Year</div></div>
+          <div class="stat-box"><div class="stat-num-sm">NYC</div><div class="stat-lbl">Location</div></div>
+          <div class="stat-box"><div class="stat-num-sm">DOJ</div><div class="stat-lbl">Studio</div></div>
+          <div class="stat-box"><div class="stat-num-sm">Comedy</div><div class="stat-lbl">Comedy</div></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-visual-inner">
+          <div class="about-visual-kanji">Film</div>
+          <div class="about-visual-caption">Talent Day · 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APPLY ══════════ -->
+<div class="page" id="apply-page">
+  <div class="apply-wrap">
+    <div class="form-header">
+      <div class="section-label" style="margin-bottom:14px">Cast Application</div>
+      <h2 style="font-family:'Noto Serif JP',serif;font-size:36px;font-weight:300;letter-spacing:-0.01em;margin-bottom:12px">Apply for Your Role</h2>
+      <p style="font-size:12px;color:var(--muted);line-height:1.9;font-weight:300">Fill in your details below. A verification code will be sent to your email.</p>
+    </div>
+
+    <div id="apply-step1">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="f-first" placeholder="First name"/></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="f-last" placeholder="Last name"/></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="f-email" type="email" placeholder="your@email.com"/></div>
+      <div class="form-group">
+        <label class="form-label">Phone <span style="opacity:.5">· optional</span></label>
+        <input class="form-input" id="f-phone" type="tel" placeholder="(555) 000-0000"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role Interest</label>
+        <select class="form-select" id="f-role">
+          <option value="">— Select —</option>
+          <option>Lead Character</option>
+          <option>Supporting Role</option>
+          <option>Background / Extra</option>
+          <option>Surprise Me</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Why do you want to be in Talent Day?</label><textarea class="form-textarea" id="f-why" placeholder="Tell us what makes you the perfect addition..."></textarea></div>
+      <button class="submit-btn" onclick="submitApplication()">Send Verification Code →</button>
+    </div>
+
+    <div id="apply-step2" style="display:none;padding:20px 0">
+      <div class="verify-box">
+        <div class="verify-title">Check Your Email</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.9;font-weight:300;margin-top:6px">We sent a 4-digit code to<br/><strong id="verify-email-display" style="color:var(--ink);font-weight:400"></strong></p>
+        <div class="verify-code-inputs">
+          <input class="code-digit" maxlength="1" id="cd1" oninput="nextDigit(this,'cd2')"/>
+          <input class="code-digit" maxlength="1" id="cd2" oninput="nextDigit(this,'cd3')"/>
+          <input class="code-digit" maxlength="1" id="cd3" oninput="nextDigit(this,'cd4')"/>
+          <input class="code-digit" maxlength="1" id="cd4"/>
+        </div>
+        <button class="submit-btn" onclick="verifyCode()">Submit Application</button>
+        <p style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-top:16px;cursor:pointer" onclick="showStep(1)">← Go Back</p>
+      </div>
+    </div>
+
+    <div id="apply-step3" style="display:none;text-align:center;padding:48px 0">
+      <div style="font-family:'Noto Serif JP',serif;font-size:56px;font-weight:200;color:var(--vermillion);margin-bottom:8px;line-height:1"></div>
+      <h2 style="font-family:'Noto Serif JP',serif;font-size:36px;font-weight:300;margin-bottom:14px;letter-spacing:-0.01em">Application Received</h2>
+      <p style="font-size:13px;color:var(--muted);line-height:2;max-width:360px;margin:0 auto;font-weight:300">Drew will personally review your application. If selected, you'll receive an access code to the Staff Portal.</p>
+      <button class="btn btn-outline" style="margin-top:40px" onclick="showPage('home')">← Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STAFF ══════════ -->
+<div class="page" id="staff-page">
+  <div class="staff-wrap">
+    <div class="staff-sidebar">
+      <div style="padding:18px 24px 18px;border-bottom:1px solid var(--border)">
+        <div style="font-family:'Noto Serif JP',serif;font-size:15px;font-weight:300;letter-spacing:0.05em">Talent Day</div>
+        <div style="font-size:8px;letter-spacing:0.4em;text-transform:uppercase;color:var(--muted);margin-top:3px">Staff Portal</div>
+      </div>
+      <span class="sidebar-label">Navigation</span>
+      <div class="sidebar-item active" id="sb-crew" onclick="showTab('crew')"><span class="sidebar-icon">👥</span>Crew & Cast</div>
+      <div class="sidebar-item" id="sb-ideas" onclick="showTab('ideas')"><span class="sidebar-icon">💡</span>Ideas Board</div>
+      <div class="sidebar-item" id="sb-chat" onclick="showTab('chat')"><span class="sidebar-icon">💬</span>Chat with Drew</div>
+      <div class="sidebar-item" id="sb-group" onclick="showTab('group')"><span class="sidebar-icon">🎙️</span>Group Chat</div>
+      <div class="sidebar-item" id="sb-roles" onclick="showTab('roles')"><span class="sidebar-icon">🎭</span>Role Bracket</div>
+      <div id="admin-sidebar" style="display:none">
+        <span class="sidebar-label">Admin</span>
+        <div class="sidebar-item" id="sb-applications" onclick="showTab('applications')"><span class="sidebar-icon">📋</span>Applications</div>
+      </div>
+      <div class="sidebar-footer">
+        <div style="font-size:12px;font-weight:400;letter-spacing:0.05em" id="staff-username-display">—</div>
+        <div style="font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-top:3px" id="staff-role-display">—</div>
+        <div style="font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-top:10px;cursor:pointer;text-decoration:underline" onclick="logout()">Sign Out</div>
+      </div>
+    </div>
+
+    <div class="staff-main">
+
+      <div class="staff-tab active" id="tab-crew">
+        <div class="staff-header"><div><div class="staff-title">Crew & Cast</div><div class="staff-subtitle">Everyone on Talent Day</div></div></div>
+        <div class="members-grid" id="crew-grid"></div>
+      </div>
+
+      <div class="staff-tab" id="tab-ideas">
+        <div class="staff-header"><div><div class="staff-title">Ideas Board</div><div class="staff-subtitle">Post scenes, concepts, and creative thoughts</div></div></div>
+        <div class="post-idea-box">
+          <textarea id="idea-input" placeholder="Share a scene idea, line of dialogue, location..."></textarea>
+          <div class="post-idea-footer">
+            <select class="tag-select" id="idea-tag"><option>Scene</option><option>Dialogue</option><option>Location</option><option>Costume</option><option>Other</option></select>
+            <button class="btn-small" onclick="postIdea()">Post</button>
+          </div>
+        </div>
+        <div class="ideas-board" id="ideas-board"></div>
+      </div>
+
+      <div class="staff-tab" id="tab-chat">
+        <div class="staff-header"><div><div class="staff-title">Chat with Drew</div><div class="staff-subtitle">Direct line to the director</div></div></div>
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="chat-avatar">D</div>
+            <div><div class="chat-name">Drew — Director</div><div class="chat-status"><span class="status-dot"></span>Online</div></div>
+          </div>
+          <div class="chat-messages" id="drew-messages">
+            <div class="chat-msg"><div class="msg-avatar drew">D</div><div><div class="msg-bubble">Hey! So glad you're on the team 🎬 Message me anytime — questions, ideas, anything.</div><div class="msg-time">Drew</div></div></div>
+          </div>
+          <div class="chat-input-bar">
+            <input class="chat-input" id="drew-input" placeholder="Message Drew..." onkeydown="if(event.key==='Enter')sendDrewMsg()"/>
+            <button class="chat-send" onclick="sendDrewMsg()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="staff-tab" id="tab-group">
+        <div class="staff-header"><div><div class="staff-title">Group Chat</div><div class="staff-subtitle">The whole cast & crew</div></div></div>
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="chat-avatar" style="font-size:14px">🎬</div>
+            <div><div class="chat-name">Talent Day — All Cast & Crew</div><div class="chat-status"><span class="status-dot"></span><span id="group-member-count">3</span> members</div></div>
+          </div>
+          <div class="group-chat-members" id="group-members-list"></div>
+          <div class="chat-messages" id="group-messages">
+            <div class="chat-msg"><div class="msg-avatar drew">D</div><div><div class="msg-bubble">Welcome to the Talent Day group chat! 🎉 Can't wait to make this with all of you.</div><div class="msg-time">Drew</div></div></div>
+          </div>
+          <div class="chat-input-bar">
+            <input class="chat-input" id="group-input" placeholder="Message the group..." onkeydown="if(event.key==='Enter')sendGroupMsg()"/>
+            <button class="chat-send" onclick="sendGroupMsg()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="staff-tab" id="tab-roles">
+        <div class="staff-header">
+          <div><div class="staff-title">Role Bracket</div><div class="staff-subtitle">Official casting — managed by Drew</div></div>
+          <button class="btn-small" id="add-role-btn" style="display:none" onclick="openRoleModal()">+ Add Role</button>
+        </div>
+        <div class="bracket-info" id="bracket-info-msg"></div>
+        <div class="bracket-grid" id="bracket-grid"></div>
+      </div>
+
+      <div class="staff-tab" id="tab-applications">
+        <div class="staff-header"><div><div class="staff-title">Applications</div><div class="staff-subtitle">Review incoming applicants</div></div></div>
+        <div class="app-list" id="app-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ROLE MODAL -->
+<div class="modal-bg" id="role-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeRoleModal()">×</button>
+    <div class="modal-inner">
+      <div class="modal-title" id="role-modal-title">Add New Role</div>
+      <div class="form-group"><label class="form-label">Role Name</label><input class="form-input" id="role-name-input" placeholder="e.g. The Protagonist"/></div>
+      <div class="form-group"><label class="form-label">Assigned To</label><input class="form-input" id="role-assigned-input" placeholder="Name or TBD"/></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="role-desc-input" style="min-height:76px" placeholder="Brief role description..."></textarea></div>
+      <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="role-status-input"><option value="open">Open</option><option value="filled">Filled</option><option value="considering">Considering</option></select></div>
+      <button class="submit-btn" onclick="saveRole()">Save Role</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-bg" id="login-modal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-close" onclick="closeLoginModal()">×</button>
+    <div class="modal-inner">
+      <div class="modal-title">Staff Login</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:24px;line-height:1.9;font-weight:300">Enter your name and the access code Drew sent you.</p>
+      <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" id="login-name" placeholder="First and last name"/></div>
+      <div class="form-group"><label class="form-label">Access Code</label><input class="form-input" id="login-code" placeholder="e.g. TD4821" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="submit-btn" onclick="doLogin()">Enter Staff Portal</button>
+      <p style="font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:14px">Director: <span style="color:var(--ink)">Drew McManus</span> · <span style="color:var(--ink)">DREW2026</span></p>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUser=null,verifyCodeActual='',pendingApplication=null,editingRoleIndex=-1;
+const ADMIN_NAME='drew mcmanus',ADMIN_CODE='DREW2026';
+let state={
+  members:[
+    {name:'Drew McManus',role:'Director',type:'admin',initial:'D'},
+  ],
+  ideas:[
+    {author:'Drew',initial:'D',text:'Opening scene: everyone trying to show off their "talent" at the same time — pure chaos.',tag:'Scene',likes:5,time:'2h ago'},
+    {author:'Jack',initial:'J',text:'Running gag where someone keeps getting interrupted right before their big moment?',tag:'Dialogue',time:'1h ago',likes:3},
+    {author:'Owen',initial:'O',text:'The school gym — bleachers, bad lighting, perfect comedy atmosphere.',tag:'Location',time:'45m ago',likes:4},
+  ],
+  roles:[
+    {name:'The Overachiever',assigned:'TBD',desc:'Desperately wants to impress everyone. Tries every talent and fails spectacularly.',status:'open'},
+    {name:'The Judge',assigned:'Drew McManus',desc:'Reluctant host of the talent show. Increasingly regrets every decision.',status:'filled'},
+    {name:'The Dark Horse',assigned:'TBD',desc:'Shows up late, says nothing, absolutely destroys it at the end.',status:'open'},
+    {name:'The Hype Man',assigned:'TBD',desc:'Cheers for everyone regardless of how bad they are. Iconic energy.',status:'open'},
+    {name:'The Saboteur',assigned:'TBD',desc:'Secretly trying to make everyone else fail while pretending to be supportive.',status:'open'},
+    {name:'The Best Friend',assigned:'TBD',desc:'Voice of reason in an unreasonable world. Mostly just confused.',status:'open'},
+    {name:'The Wildcard',assigned:'TBD',desc:'Nobody knows what their talent is. Not even them.',status:'open'},
+  ],
+  applications:[],
+  appStats:{total:0,cast:1},
+};
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));document.getElementById(p+'-page').classList.add('active');const n=document.getElementById('nav-'+p);if(n)n.classList.add('active');window.scrollTo(0,0);if(p==='staff')renderStaff();}
+function requireStaff(){if(currentUser)showPage('staff');else document.getElementById('login-modal').classList.add('open');}
+function closeLoginModal(){document.getElementById('login-modal').classList.remove('open');}
+function doLogin(){
+  const name=document.getElementById('login-name').value.trim();
+  const code=document.getElementById('login-code').value.trim().toUpperCase();
+  if(!name||!code){showToast('Please enter your name and code');return;}
+  if(name.toLowerCase()===ADMIN_NAME&&code===ADMIN_CODE){currentUser={name:'Drew McManus',role:'Director',isAdmin:true,initial:'D'};closeLoginModal();showPage('staff');showNotif('Welcome back, Drew 🎬');return;}
+  const m=state.members.find(x=>x.name.toLowerCase()===name.toLowerCase()&&x.code&&x.code.toUpperCase()===code);
+  if(m){currentUser={name:m.name,role:m.role,isAdmin:false,initial:m.initial};closeLoginModal();showPage('staff');showNotif('Welcome, '+m.name+' 🎬');}
+  else showToast('Name or code not recognised');
+}
+function logout(){currentUser=null;showPage('home');}
+function submitApplication(){
+  const first=document.getElementById('f-first').value.trim(),last=document.getElementById('f-last').value.trim();
+  const email=document.getElementById('f-email').value.trim(),phone=document.getElementById('f-phone').value.trim();
+  const role=document.getElementById('f-role').value,why=document.getElementById('f-why').value.trim();
+  if(!first||!last||!email||!role||!why){showToast('Please fill out all fields');return;}
+  pendingApplication={name:first+' '+last,email,phone,role,why};
+  verifyCodeActual=Math.floor(1000+Math.random()*9000).toString();
+  const btn=document.querySelector('#apply-step1 .submit-btn');
+  btn.textContent='Sending code...';btn.disabled=true;
+  emailjs.send('service_cvka7en','template_vdrr1hv',{to_email:email,name:first,code:verifyCodeActual})
+  .then(()=>{document.getElementById('verify-email-display').textContent=email;btn.textContent='Send Verification Code \u2192';btn.disabled=false;showStep(2);})
+  .catch(err=>{console.error(err);showToast('Could not send email \u2014 please try again');btn.textContent='Send Verification Code \u2192';btn.disabled=false;});
+}
+function showStep(n){[1,2,3].forEach(i=>document.getElementById('apply-step'+i).style.display=i===n?'block':'none');}
+function nextDigit(el,nid){if(el.value.length===1)document.getElementById(nid).focus();}
+function verifyCode(){
+  const code=['cd1','cd2','cd3','cd4'].map(id=>document.getElementById(id).value).join('');
+  if(code===verifyCodeActual){state.applications.push(pendingApplication);state.appStats.total++;document.getElementById('stat-apps').textContent=state.appStats.total;showStep(3);}
+  else{showToast('Incorrect code \u2014 try again');['cd1','cd2','cd3','cd4'].forEach(id=>document.getElementById(id).value='');document.getElementById('cd1').focus();}
+}
+function renderStaff(){
+  if(!currentUser)return;
+  document.getElementById('staff-username-display').textContent=currentUser.name;
+  document.getElementById('staff-role-display').textContent=currentUser.role;
+  document.getElementById('admin-sidebar').style.display=currentUser.isAdmin?'block':'none';
+  document.getElementById('add-role-btn').style.display=currentUser.isAdmin?'inline-flex':'none';
+  document.getElementById('bracket-info-msg').textContent=currentUser.isAdmin?'✏️ Admin mode — click the pencil on any role to edit.':'👁️ View the official role assignments. Only Drew can edit.';
+  renderCrew();renderIdeas();renderRoles();renderApplications();renderGroupMembers();
+}
+function renderCrew(){document.getElementById('crew-grid').innerHTML=state.members.map(m=>`<div class="member-card"><div class="member-avatar">${m.initial}</div><div class="member-name">${m.name}</div><div class="member-role">${m.role}</div><span class="member-badge">${m.type}</span></div>`).join('');}
+function renderIdeas(){
+  const b=document.getElementById('ideas-board');
+  if(!state.ideas.length){b.innerHTML='<div class="empty-state">No ideas yet</div>';return;}
+  b.innerHTML=state.ideas.map((idea,i)=>`<div class="idea-card"><div class="idea-author"><span class="idea-author-name">${idea.author}</span><span class="idea-time">${idea.time||'just now'}</span></div><div class="idea-text">${idea.text}</div><span class="idea-tag">${idea.tag}</span><div class="idea-actions"><button class="idea-btn" onclick="likeIdea(${i})">♥ ${idea.likes||0}</button>${currentUser&&currentUser.isAdmin?`<button class="idea-btn" onclick="deleteIdea(${i})" style="margin-left:auto;color:var(--vermillion)">✕ Remove</button>`:''}</div></div>`).join('');
+}
+function postIdea(){const text=document.getElementById('idea-input').value.trim();const tag=document.getElementById('idea-tag').value;if(!text)return;state.ideas.unshift({author:currentUser.name,initial:currentUser.initial,text,tag,likes:0,time:'just now'});document.getElementById('idea-input').value='';renderIdeas();showToast('Idea posted');}
+function likeIdea(i){state.ideas[i].likes=(state.ideas[i].likes||0)+1;renderIdeas();}
+function deleteIdea(i){state.ideas.splice(i,1);renderIdeas();}
+function renderRoles(){document.getElementById('bracket-grid').innerHTML=state.roles.map((r,i)=>`<div class="role-card">${currentUser&&currentUser.isAdmin?`<button class="role-edit-btn" onclick="editRole(${i})">✏️</button>`:''}<div class="role-number">Role ${String(i+1).padStart(2,'0')}</div><div class="role-name">${r.name}</div><div class="role-assigned">👤 ${r.assigned}</div><div class="role-desc">${r.desc}</div><div><span class="role-status status-${r.status}">${r.status}</span></div></div>`).join('');}
+function renderApplications(){
+  if(!currentUser||!currentUser.isAdmin)return;
+  const list=document.getElementById('app-list');
+  if(!state.applications.length){list.innerHTML='<div class="empty-state">No applications yet</div>';return;}
+  list.innerHTML=state.applications.map((a,i)=>`<div class="app-item"><div class="app-info"><h4>${a.name}</h4><p>${a.email}${a.phone?' · '+a.phone:''} · ${a.role}</p><p class="app-why">"${a.why}"</p></div><div class="app-actions"><button class="btn-approve" onclick="approveApp(${i})">✓ Approve</button><button class="btn-deny" onclick="denyApp(${i})">✕ Deny</button></div></div>`).join('');
+}
+function renderGroupMembers(){document.getElementById('group-members-list').innerHTML=state.members.map(m=>`<span class="gchat-member">${m.name}</span>`).join('');document.getElementById('group-member-count').textContent=state.members.length;}
+function approveApp(i){const app=state.applications[i];const code='TD'+Math.floor(1000+Math.random()*9000);state.members.push({name:app.name,role:app.role,type:'cast',initial:app.name[0].toUpperCase(),code});state.appStats.cast++;document.getElementById('stat-cast').textContent=state.appStats.cast;state.applications.splice(i,1);renderApplications();renderCrew();renderGroupMembers();showNotif('✓ '+app.name+' approved\nAccess code: '+code);}
+function denyApp(i){const app=state.applications[i];state.applications.splice(i,1);renderApplications();showToast(app.name+' declined');}
+function openRoleModal(){editingRoleIndex=-1;document.getElementById('role-modal-title').textContent='Add New Role';['role-name-input','role-assigned-input','role-desc-input'].forEach(id=>document.getElementById(id).value='');document.getElementById('role-status-input').value='open';document.getElementById('role-modal').classList.add('open');}
+function editRole(i){if(!currentUser||!currentUser.isAdmin)return;editingRoleIndex=i;const r=state.roles[i];document.getElementById('role-modal-title').textContent='Edit Role';document.getElementById('role-name-input').value=r.name;document.getElementById('role-assigned-input').value=r.assigned;document.getElementById('role-desc-input').value=r.desc;document.getElementById('role-status-input').value=r.status;document.getElementById('role-modal').classList.add('open');}
+function closeRoleModal(){document.getElementById('role-modal').classList.remove('open');}
+function saveRole(){const obj={name:document.getElementById('role-name-input').value.trim()||'Untitled',assigned:document.getElementById('role-assigned-input').value.trim()||'TBD',desc:document.getElementById('role-desc-input').value.trim()||'No description.',status:document.getElementById('role-status-input').value};if(editingRoleIndex>=0)state.roles[editingRoleIndex]=obj;else state.roles.push(obj);closeRoleModal();renderRoles();showToast(editingRoleIndex>=0?'Role updated':'Role added');}
+function sendDrewMsg(){const input=document.getElementById('drew-input'),text=input.value.trim();if(!text)return;const msgs=document.getElementById('drew-messages');msgs.innerHTML+=`<div class="chat-msg mine"><div class="msg-avatar">${currentUser.initial}</div><div><div class="msg-bubble">${text}</div><div class="msg-time">You</div></div></div>`;input.value='';msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{const r=["Love it! Let's talk more when we meet 🎬","Great point — adding that to the notes.","Haha yes that's exactly the vibe 😂","Getting so excited for filming!!","100% — that's Talent Day.","Noted! I'll mention it to Jack and Owen."][Math.floor(Math.random()*6)];msgs.innerHTML+=`<div class="chat-msg"><div class="msg-avatar drew">D</div><div><div class="msg-bubble">${r}</div><div class="msg-time">Drew</div></div></div>`;msgs.scrollTop=msgs.scrollHeight;},1200);}
+function sendGroupMsg(){const input=document.getElementById('group-input'),text=input.value.trim();if(!text)return;const msgs=document.getElementById('group-messages');msgs.innerHTML+=`<div class="chat-msg mine"><div class="msg-avatar">${currentUser.initial}</div><div><div class="msg-bubble">${text}</div><div class="msg-time">You</div></div></div>`;input.value='';msgs.scrollTop=msgs.scrollHeight;}
+function showTab(t){document.querySelectorAll('.staff-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.sidebar-item').forEach(x=>x.classList.remove('active'));document.getElementById('tab-'+t).classList.add('active');document.getElementById('sb-'+t).classList.add('active');}
+function showNotif(msg){const n=document.getElementById('notif');n.textContent=msg;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),4500);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+document.getElementById('stat-apps').textContent=state.appStats.total;
+document.getElementById('stat-cast').textContent=state.appStats.total;
+document.getElementById('stat-cast').textContent=state.appStats.cast;
+</script>
+</body>
+</html>
